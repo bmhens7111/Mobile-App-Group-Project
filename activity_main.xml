@@ -13,7 +13,7 @@
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:background="@color/purple_700" />
+        android:background="@color/darkBrown" />
 
     <GridLayout
         android:id="@+id/game_grid"
@@ -26,37 +26,53 @@
         android:rowCount="4"
         android:useDefaultMargins="true">
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
-        <TextView style="@style/GridSquare" />
+        <TextView
+            style="@style/GridSquare" />
 
     </GridLayout>
 
@@ -72,9 +88,11 @@
         android:textStyle="normal" />
 
     <Button
+        android:id="@+id/newGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/scoreField"
         android:layout_alignParentRight="true"
-        android:text="@string/new_game_button_text" />
+        android:text="@string/new_game_button_text"
+        android:onClick="onNewGameClick"/>
 </RelativeLayout>
