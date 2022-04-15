@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">groupProject</string>
-    <string name="grid">grid</string>
-    <string name="score">Score:</string>
-    <string name="new_game_button_text">New Game</string>
-</resources>
