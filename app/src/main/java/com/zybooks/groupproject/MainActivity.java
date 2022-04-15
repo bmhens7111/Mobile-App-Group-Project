@@ -108,4 +108,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void directionalPadMovement(View v) {
+        String value = (String) v.getTag();
+        mGame.move(value);
+        setTileValues();
+        setScore();
+
+    }
+
 }
