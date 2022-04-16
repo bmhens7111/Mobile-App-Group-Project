@@ -1,11 +1,6 @@
 package com.zybooks.groupproject;
 
-import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-
 import java.util.Random;
-import java.util.Scanner;
 
 public class Game {
     final static int GRID_SIZE = 4;
@@ -34,7 +29,7 @@ public class Game {
             xPos = randGen.nextInt(GRID_SIZE);
             yPos = randGen.nextInt(GRID_SIZE);
         }
-        if (randGen.nextInt(5) == 0) { //new tiles have 20% chance to have a value of 4
+        if (randGen.nextInt(6) == 0) { //new tiles have 20% chance to have a value of 4
             tileArray[xPos][yPos] = 4;
         }
         else {
@@ -65,13 +60,23 @@ public class Game {
         return score;
     }
 
+    public boolean isGameOver() {
+        for (int row = 0; row < Game.GRID_SIZE; row++) {
+            for (int col = 0; col < Game.GRID_SIZE; col++) {
+                if (tileArray[row][col] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void move(String direction) {
-        int currentRow = 0;
-        int currentCol = 0;
+        int currentRow;
+        int currentCol;
         switch (direction) {
             case "up":
                 for (int row=1; row<GRID_SIZE; row++) {
-                    currentRow = 0;
                     for (int col=0; col<GRID_SIZE; col++) {
                         currentRow = row;
                         while (currentRow > 0) {
@@ -80,13 +85,12 @@ public class Game {
                                     tileArray[currentRow-1][col] += tileArray[currentRow][col];
                                     tileArray[currentRow][col] = 0;
                                 }
-                                currentRow--;
                             }
                             else {
                                 tileArray[currentRow-1][col] = tileArray[currentRow][col];
                                 tileArray[currentRow][col] = 0;
-                                currentRow--;
                             }
+                            currentRow--;
                         }
                     }
                 }
@@ -95,7 +99,6 @@ public class Game {
 
             case "down":
                 for (int row=GRID_SIZE-2; row>=0; row--) {
-                    currentRow = GRID_SIZE-1;
                     for (int col=0; col<GRID_SIZE; col++) {
                         currentRow = row;
                         while (currentRow < GRID_SIZE-1) {
@@ -104,13 +107,12 @@ public class Game {
                                     tileArray[currentRow+1][col] += tileArray[currentRow][col];
                                     tileArray[currentRow][col] = 0;
                                 }
-                                currentRow++;
                             }
                             else {
                                 tileArray[currentRow+1][col] = tileArray[currentRow][col];
                                 tileArray[currentRow][col] = 0;
-                                currentRow++;
                             }
+                            currentRow++;
                         }
                     }
                 }
@@ -119,7 +121,6 @@ public class Game {
 
             case "left":
                 for (int col=1; col<GRID_SIZE; col++) {
-                    currentCol = 0;
                     for (int row=0; row<GRID_SIZE; row++) {
                         currentCol = col;
                         while (currentCol > 0) {
@@ -128,13 +129,12 @@ public class Game {
                                     tileArray[row][currentCol-1] += tileArray[row][currentCol];
                                     tileArray[row][currentCol] = 0;
                                 }
-                                currentCol--;
                             }
                             else {
                                 tileArray[row][currentCol-1] = tileArray[row][currentCol];
                                 tileArray[row][currentCol] = 0;
-                                currentCol--;
                             }
+                            currentCol--;
                         }
                     }
                 }
@@ -143,7 +143,6 @@ public class Game {
 
             case "right":
                 for (int col=GRID_SIZE-2; col>=0; col--) {
-                    currentCol = 0;
                     for (int row=0; row<GRID_SIZE; row++) {
                         currentCol = col;
                         while (currentCol < GRID_SIZE-1) {
@@ -152,13 +151,12 @@ public class Game {
                                     tileArray[row][currentCol+1] += tileArray[row][currentCol];
                                     tileArray[row][currentCol] = 0;
                                 }
-                                currentCol++;
                             }
                             else {
                                 tileArray[row][currentCol+1] = tileArray[row][currentCol];
                                 tileArray[row][currentCol] = 0;
-                                currentCol++;
                             }
+                            currentCol++;
                         }
                     }
                 }

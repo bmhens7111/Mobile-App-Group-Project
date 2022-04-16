@@ -1,13 +1,17 @@
 package com.zybooks.groupproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Game mGame;
     private GridLayout mTileGrid;
     private TextView scoreField;
+    private GridLayout dirButtons;
     private GestureDetectorCompat mDetector;
 
 
@@ -26,10 +31,63 @@ public class MainActivity extends AppCompatActivity {
 
         mTileGrid = findViewById(R.id.game_grid);
         scoreField = findViewById(R.id.scoreField);
+        dirButtons = findViewById(R.id.direction_buttons);
+
+        Button upButton = findViewById(R.id.directionUp);
+        upButton.setOnClickListener(v -> {
+            mGame.move("up");
+            setTileValues();
+            setScore();
+        });
+        Button downButton = findViewById(R.id.directionDown);
+        downButton.setOnClickListener(v -> {
+            mGame.move("down");
+            setTileValues();
+            setScore();
+        });
+        Button leftButton = findViewById(R.id.directionLeft);
+        leftButton.setOnClickListener(v -> {
+            mGame.move("left");
+            setTileValues();
+            setScore();
+        });
+        Button rightButton = findViewById(R.id.directionRight);
+        rightButton.setOnClickListener(v -> {
+            mGame.move("right");
+            setTileValues();
+            setScore();
+        });
 
         mGame = new Game();
         startGame();
         mDetector = new GestureDetectorCompat(this, new GridGestureListener());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar_controls, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // Determine which menu option was chosen
+        if (item.getItemId() == R.id.new_game) {
+            startGame();
+            return true;
+        }
+        else if (item.getItemId() == R.id.show_dir_buttons) {
+            if (dirButtons.isShown()) {
+                dirButtons.setVisibility(View.GONE);
+            }
+            else {
+                dirButtons.setVisibility(View.VISIBLE);
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void startGame() {
@@ -39,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setScore() {
-        scoreField.setText("Score: " + String.valueOf(mGame.getScore()));
+        String score = getString(R.string.score, mGame.getScore());
+        scoreField.setText(score);
     }
 
     private void setTileValues() {
@@ -59,10 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void onNewGameClick(View view) {
-        startGame();
     }
 
     @Override
@@ -106,14 +161,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         }
-    }
-
-    public void directionalPadMovement(View v) {
-        String value = (String) v.getTag();
-        mGame.move(value);
-        setTileValues();
-        setScore();
-
     }
 
 }
