@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -94,7 +93,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/purple_700"
-            android:onClick="directionalPadMovement"
             android:tag="up" />
 
         <Button
@@ -102,7 +100,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/purple_700"
-            android:onClick="directionalPadMovement"
             android:tag="right" />
 
         <Button
@@ -110,7 +107,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/purple_700"
-            android:onClick="directionalPadMovement"
             android:tag="left" />
 
         <Button
@@ -118,7 +114,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/purple_700"
-            android:onClick="directionalPadMovement"
             android:tag="down" />
     </GridLayout>
 
@@ -126,19 +121,10 @@
         android:id="@+id/scoreField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/grid_base"
+        android:layout_alignParentEnd="true"
         android:text="@string/score"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="normal" />
-
-    <Button
-        android:id="@+id/newGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scoreField"
-        android:layout_alignParentRight="true"
-        android:text="@string/new_game_button_text"
-        android:onClick="onNewGameClick"/>
 </RelativeLayout>

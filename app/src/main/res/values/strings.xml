@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">groupProject</string>
     <string name="grid">grid</string>
-    <string name="score">Score:</string>
+    <string name="score">Score: %d</string>
     <string name="new_game_button_text">New Game</string>
+    <string name="show_dir_buttons">Use Directional Pad</string>
 </resources>
