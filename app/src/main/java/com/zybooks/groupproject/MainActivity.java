@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +42,26 @@ public class MainActivity extends AppCompatActivity {
         mGame = new Game();
         startGame();
         mDetector = new GestureDetectorCompat(this, new GridGestureListener());
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+
+                case R.id.how_to_play_icon:
+                    Intent intentHowToPlay = new Intent(MainActivity.this, HowToPlay.class);
+                    startActivity(intentHowToPlay);
+                    break;
+
+                default:
+                    break;
+
+            }
+            return false;
+        });
     }
 
     private void startGame() {
