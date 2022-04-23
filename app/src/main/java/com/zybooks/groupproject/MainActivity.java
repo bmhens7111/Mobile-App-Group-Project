@@ -17,19 +17,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class MainActivity extends AppCompatActivity {
@@ -149,11 +143,12 @@ public class MainActivity extends AppCompatActivity {
         String score = getString(R.string.score, mGame.getScore());
         scoreField.setText(score);
         if (mGame.isGameOver()) {
+            writeScore();
             createWinDialog();
         }
     }
 
-    private void writeScore(String name) {
+    private void writeScore() {
         FileOutputStream outputStream = null;
         try {
             outputStream = openFileOutput("high_score_list", Context.MODE_APPEND);
@@ -161,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         PrintWriter writer = new PrintWriter(outputStream);
-        writer.println(name + " --- " + mGame.getScore());
+        writer.println(mGame.getScore());
         writer.close();
     }
 
@@ -231,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View winScreenPopupView = getLayoutInflater().inflate(R.layout.popup, null);
 
-        EditText nameField = winScreenPopupView.findViewById(R.id.name_field);
         Button winScreenPopupContinue = winScreenPopupView.findViewById(R.id.winScreenPopupContinue);
         Button winScreenPopupQuit = winScreenPopupView.findViewById(R.id.winScreenPopupQuit);
         Button winScreenPopupReset = winScreenPopupView.findViewById(R.id.winScreenPopupReset);
@@ -241,21 +235,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
         winScreenPopupContinue.setOnClickListener(view -> {
-            String name = nameField.getText().toString().trim();
-            writeScore(name);
             dialog.dismiss();
         });
 
         winScreenPopupQuit.setOnClickListener(view -> {
-            String name = nameField.getText().toString().trim();
-            writeScore(name);
             finishAffinity();
         });
 
 
         winScreenPopupReset.setOnClickListener(view -> {
-            String name = nameField.getText().toString().trim();
-            writeScore(name);
             startGame();
             dialog.dismiss();
         });

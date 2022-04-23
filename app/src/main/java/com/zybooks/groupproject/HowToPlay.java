@@ -29,6 +29,11 @@ public class HowToPlay extends AppCompatActivity {
                     startActivity(intentGame);
                     break;
 
+                case R.id.leaderboard_icon:
+                    Intent intentLeaderBoard = new Intent(HowToPlay.this, ScoreActivity.class);
+                    startActivity(intentLeaderBoard);
+                    break;
+
                 default:
                     break;
 

@@ -1,9 +1,6 @@
 package com.zybooks.groupproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,14 +13,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ScoreActivity extends AppCompatActivity {
 
-    private final int NUM_SCORES = 8;
+    private int NUM_SCORES = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,30 +40,47 @@ public class ScoreActivity extends AppCompatActivity {
                     startActivity(intentGame);
                     break;
 
+                case R.id.how_to_play_icon:
+                    Intent intentTutorial = new Intent(ScoreActivity.this, HowToPlay.class);
+                    startActivity(intentTutorial);
+                    break;
+
                 default:
                     break;
 
             }
             return false;
         });
-
-        try {
-            setHighScores();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setHighScores();
     }
 
-    private void setHighScores() throws IOException{
+    private void setHighScores() {
         LinearLayout leaderBoard = findViewById(R.id.leader_board);
-        FileInputStream inputStream = openFileInput("high_score_list");
+        FileInputStream inputStream = null;
+        try {
+            inputStream = openFileInput("high_score_list");
+        }
+        catch (FileNotFoundException e) {
+            TextView holder = (TextView) leaderBoard.getChildAt(0);
+            holder.setText(R.string.no_scores_yet);
+            e.printStackTrace();
 
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            ArrayList<Integer> sortedScores = new ArrayList<>();
             String line;
-            int i = 0;
-            while ((line = reader.readLine()) != null && i < NUM_SCORES) {
+            while ((line = reader.readLine()) != null) {
+                System.out.println("SCORE CHECKING: " + line);
+                sortedScores.add(Integer.parseInt(line));
+            }
+            Collections.sort(sortedScores);
+            Collections.reverse(sortedScores);
+            if (sortedScores.size() < NUM_SCORES) {
+                NUM_SCORES = sortedScores.size();
+            }
+            for (int i=0; i < NUM_SCORES; i++) {
                 TextView holder = (TextView) leaderBoard.getChildAt(i);
-                holder.setText(line);
+                holder.setText(String.valueOf(sortedScores.get(i)));
                 switch (i) {
                     case 0:
                         holder.setBackgroundColor(getResources().getColor(R.color.gold));
@@ -80,8 +94,9 @@ public class ScoreActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-                i++;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
