@@ -1,10 +1,15 @@
 package com.zybooks.groupproject;
 
+import static com.zybooks.groupproject.R.color.black;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -12,16 +17,30 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 public class MainActivity extends AppCompatActivity {
 
     private Game mGame;
     private GridLayout mTileGrid;
     private TextView scoreField;
-    private GridLayout dirButtons;
     private GestureDetectorCompat mDetector;
+    private GridLayout dirButtons;
+
+    private AlertDialog dialog;
 
 
     @Override
@@ -33,34 +52,64 @@ public class MainActivity extends AppCompatActivity {
         scoreField = findViewById(R.id.scoreField);
         dirButtons = findViewById(R.id.direction_buttons);
 
-        Button upButton = findViewById(R.id.directionUp);
-        upButton.setOnClickListener(v -> {
-            mGame.move("up");
-            setTileValues();
-            setScore();
-        });
-        Button downButton = findViewById(R.id.directionDown);
-        downButton.setOnClickListener(v -> {
-            mGame.move("down");
-            setTileValues();
-            setScore();
-        });
-        Button leftButton = findViewById(R.id.directionLeft);
-        leftButton.setOnClickListener(v -> {
-            mGame.move("left");
-            setTileValues();
-            setScore();
-        });
-        Button rightButton = findViewById(R.id.directionRight);
-        rightButton.setOnClickListener(v -> {
-            mGame.move("right");
-            setTileValues();
-            setScore();
-        });
-
         mGame = new Game();
         startGame();
         mDetector = new GestureDetectorCompat(this, new GridGestureListener());
+
+        Button upButton = findViewById(R.id.directionUp);
+        upButton.setOnClickListener(v -> {
+            if (!mGame.isGameOver()) {
+                mGame.move("up");
+                setTileValues();
+                setScore();
+            }
+        });
+        Button downButton = findViewById(R.id.directionDown);
+        downButton.setOnClickListener(v -> {
+            if (!mGame.isGameOver()) {
+                mGame.move("down");
+                setTileValues();
+                setScore();
+            }
+        });
+        Button leftButton = findViewById(R.id.directionLeft);
+        leftButton.setOnClickListener(v -> {
+            if (!mGame.isGameOver()) {
+                mGame.move("left");
+                setTileValues();
+                setScore();
+            }
+        });
+        Button rightButton = findViewById(R.id.directionRight);
+        rightButton.setOnClickListener(v -> {
+            if (!mGame.isGameOver()) {
+                mGame.move("right");
+                setTileValues();
+                setScore();
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+
+                case R.id.how_to_play_icon:
+                    Intent intentHowToPlay = new Intent(MainActivity.this, HowToPlay.class);
+                    startActivity(intentHowToPlay);
+                    break;
+
+                case R.id.leaderboard_icon:
+                    Intent intentLeaderBoard = new Intent(MainActivity.this, ScoreActivity.class);
+                    startActivity(intentLeaderBoard);
+                    break;
+
+            }
+            return false;
+        });
     }
 
     @Override
@@ -99,6 +148,21 @@ public class MainActivity extends AppCompatActivity {
     private void setScore() {
         String score = getString(R.string.score, mGame.getScore());
         scoreField.setText(score);
+        if (mGame.isGameOver()) {
+            createWinDialog();
+        }
+    }
+
+    private void writeScore(String name) {
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = openFileOutput("high_score_list", Context.MODE_APPEND);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        PrintWriter writer = new PrintWriter(outputStream);
+        writer.println(name + " --- " + mGame.getScore());
+        writer.close();
     }
 
     private void setTileValues() {
@@ -114,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     tile.setTextColor(ContextCompat.getColor(this, R.color.tan));
                 }
                 else {
-                    tile.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    tile.setTextColor(ContextCompat.getColor(this, black));
                 }
             }
         }
@@ -163,4 +227,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void createWinDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View winScreenPopupView = getLayoutInflater().inflate(R.layout.popup, null);
+
+        EditText nameField = winScreenPopupView.findViewById(R.id.name_field);
+        Button winScreenPopupContinue = winScreenPopupView.findViewById(R.id.winScreenPopupContinue);
+        Button winScreenPopupQuit = winScreenPopupView.findViewById(R.id.winScreenPopupQuit);
+        Button winScreenPopupReset = winScreenPopupView.findViewById(R.id.winScreenPopupReset);
+
+        dialogBuilder.setView(winScreenPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        winScreenPopupContinue.setOnClickListener(view -> {
+            String name = nameField.getText().toString().trim();
+            writeScore(name);
+            dialog.dismiss();
+        });
+
+        winScreenPopupQuit.setOnClickListener(view -> {
+            String name = nameField.getText().toString().trim();
+            writeScore(name);
+            finishAffinity();
+        });
+
+
+        winScreenPopupReset.setOnClickListener(view -> {
+            String name = nameField.getText().toString().trim();
+            writeScore(name);
+            startGame();
+            dialog.dismiss();
+        });
+    }
 }
