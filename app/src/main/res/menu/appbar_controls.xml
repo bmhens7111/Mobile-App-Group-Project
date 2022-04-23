@@ -8,8 +8,8 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/show_dir_buttons"
-        android:title="@string/show_dir_buttons"
-        android:icon="@drawable/gamepad"
+        android:title="@string/show_directional_buttons"
+        android:icon="@drawable/game_icon"
         android:visible="true"
         app:showAsAction="ifRoom"/>
 </menu>
