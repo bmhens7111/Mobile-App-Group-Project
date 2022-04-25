@@ -24,6 +24,4 @@
         android:icon="@drawable/options_icon"
         android:title="@string/options_menu_title"
         android:enabled="true"/>
-
-
 </menu>

@@ -16,7 +16,7 @@ public class HowToPlay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.how_to_play);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
@@ -27,6 +27,16 @@ public class HowToPlay extends AppCompatActivity {
                 case R.id.game_icon:
                     Intent intentGame = new Intent(HowToPlay.this, MainActivity.class);
                     startActivity(intentGame);
+                    break;
+
+                case R.id.leaderboard_icon:
+                    Intent intentLeaderBoard = new Intent(HowToPlay.this, ScoreActivity.class);
+                    startActivity(intentLeaderBoard);
+                    break;
+
+                case R.id.options_icon:
+                    Intent intentOptions = new Intent(HowToPlay.this, Options.class);
+                    startActivity(intentOptions);
                     break;
 
                 default:

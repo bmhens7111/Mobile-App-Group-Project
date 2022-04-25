@@ -10,4 +10,7 @@
     <color name="darkBrown">#664229</color>
     <color name="brown">#E1C16E</color>
     <color name="tan">#ECDEC9</color>
+    <color name="gold">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="bronze">#CD7F32</color>
 </resources>

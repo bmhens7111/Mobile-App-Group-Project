@@ -1,11 +1,6 @@
 package com.zybooks.groupproject;
 
-import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-
 import java.util.Random;
-import java.util.Scanner;
 
 public class Game {
     final static int GRID_SIZE = 4;
@@ -26,19 +21,41 @@ public class Game {
         addTile();
     }
 
+    public String getState() {
+        StringBuilder boardString = new StringBuilder();
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                int value = tileArray[row][col];
+                boardString.append(value);
+            }
+        }
+
+        return boardString.toString();
+    }
+
+    public void setState(String gameState) {
+        int index = 0;
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                tileArray[row][col] = Character.getNumericValue(gameState.charAt(index));
+                index++;
+            }
+        }
+    }
+
     //add a new tile to the board
     public void addTile() {
-        int xPos = randGen.nextInt(GRID_SIZE);
-        int yPos = randGen.nextInt(GRID_SIZE);
-        while (isTaken(xPos, yPos)) {
-            xPos = randGen.nextInt(GRID_SIZE);
-            yPos = randGen.nextInt(GRID_SIZE);
+        int row = randGen.nextInt(GRID_SIZE);
+        int col = randGen.nextInt(GRID_SIZE);
+        while (tileArray[row][col] != 0) {
+            row = randGen.nextInt(GRID_SIZE);
+            col = randGen.nextInt(GRID_SIZE);
         }
-        if (randGen.nextInt(5) == 0) { //new tiles have 20% chance to have a value of 4
-            tileArray[xPos][yPos] = 4;
+        if (randGen.nextInt(6) == 0) { //new tiles have small chance to have a value of 4
+            tileArray[row][col] = 4;
         }
         else {
-            tileArray[xPos][yPos] = 2;
+            tileArray[row][col] = 2;
         }
     }
 
@@ -65,28 +82,106 @@ public class Game {
         return score;
     }
 
+    //This function only considers the corner tiles and the center 4 tiles
+    public boolean existsMergeAble(int row, int col) {
+        //Top left tile
+        if (row == 0 && col == 0) {
+            //Check tile to right or tile below
+            if (tileArray[row][col] == tileArray[row][col+1] ||
+                tileArray[row][col] == tileArray[row+1][col]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        //Bottom left tile
+        else if (row == GRID_SIZE-1 && col == 0) {
+            //Check tile to right or tile above
+            if (tileArray[row][col] == tileArray[row][col+1] ||
+                tileArray[row][col] == tileArray[row-1][col]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        //Top right tile
+        else if (row == 0 && col == GRID_SIZE-1) {
+            //Check tile to left or tile below
+            if (tileArray[row][col] == tileArray[row][col-1] ||
+                tileArray[row][col] == tileArray[row+1][col]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        //Bottom right tile
+        else if (row == GRID_SIZE-1 && col == GRID_SIZE-1) {
+            //Check tile to left or tile above
+            if (tileArray[row][col] == tileArray[row][col-1] ||
+                tileArray[row][col] == tileArray[row-1][col]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        //Inner tiles
+        else if (row > 0 && row < GRID_SIZE-1 && col > 0 && col < GRID_SIZE-1) {
+            //Check tile above, below, to right, or to left
+            if (tileArray[row][col] == tileArray[row-1][col] ||
+                tileArray[row][col] == tileArray[row+1][col] ||
+                tileArray[row][col] == tileArray[row][col+1] ||
+                tileArray[row][col] == tileArray[row][col-1]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean isGameOver() {
+        for (int row = 0; row < Game.GRID_SIZE; row++) {
+            for (int col = 0; col < Game.GRID_SIZE; col++) {
+                //If there is an empty space on the grid or if two adjacent tiles can be merged
+                if (tileArray[row][col] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void move(String direction) {
-        int currentRow = 0;
-        int currentCol = 0;
+        boolean[][] alreadyMerged = new boolean[GRID_SIZE][GRID_SIZE];
+        int currentRow;
+        int currentCol;
         switch (direction) {
             case "up":
                 for (int row=1; row<GRID_SIZE; row++) {
-                    currentRow = 0;
                     for (int col=0; col<GRID_SIZE; col++) {
                         currentRow = row;
                         while (currentRow > 0) {
                             if (isTaken(currentRow-1, col)) {
                                 if (tileArray[currentRow-1][col] == tileArray[currentRow][col]) {
-                                    tileArray[currentRow-1][col] += tileArray[currentRow][col];
-                                    tileArray[currentRow][col] = 0;
+                                    if (!alreadyMerged[currentRow][col]) {
+                                        tileArray[currentRow-1][col] += tileArray[currentRow][col];
+                                        tileArray[currentRow][col] = 0;
+                                        alreadyMerged[currentRow][col] = true;
+                                    }
                                 }
-                                currentRow--;
                             }
                             else {
                                 tileArray[currentRow-1][col] = tileArray[currentRow][col];
                                 tileArray[currentRow][col] = 0;
-                                currentRow--;
                             }
+                            currentRow--;
                         }
                     }
                 }
@@ -95,22 +190,23 @@ public class Game {
 
             case "down":
                 for (int row=GRID_SIZE-2; row>=0; row--) {
-                    currentRow = GRID_SIZE-1;
                     for (int col=0; col<GRID_SIZE; col++) {
                         currentRow = row;
                         while (currentRow < GRID_SIZE-1) {
                             if (isTaken(currentRow+1, col)) {
                                 if (tileArray[currentRow+1][col] == tileArray[currentRow][col]) {
-                                    tileArray[currentRow+1][col] += tileArray[currentRow][col];
-                                    tileArray[currentRow][col] = 0;
+                                    if (!alreadyMerged[currentRow][col]) {
+                                        tileArray[currentRow+1][col] += tileArray[currentRow][col];
+                                        tileArray[currentRow][col] = 0;
+                                        alreadyMerged[currentRow][col] = true;
+                                    }
                                 }
-                                currentRow++;
                             }
                             else {
                                 tileArray[currentRow+1][col] = tileArray[currentRow][col];
                                 tileArray[currentRow][col] = 0;
-                                currentRow++;
                             }
+                            currentRow++;
                         }
                     }
                 }
@@ -119,22 +215,23 @@ public class Game {
 
             case "left":
                 for (int col=1; col<GRID_SIZE; col++) {
-                    currentCol = 0;
                     for (int row=0; row<GRID_SIZE; row++) {
                         currentCol = col;
                         while (currentCol > 0) {
                             if (isTaken(row, currentCol-1)) {
                                 if (tileArray[row][currentCol-1] == tileArray[row][currentCol]) {
-                                    tileArray[row][currentCol-1] += tileArray[row][currentCol];
-                                    tileArray[row][currentCol] = 0;
+                                    if (!alreadyMerged[row][currentCol]) {
+                                        tileArray[row][currentCol-1] += tileArray[row][currentCol];
+                                        tileArray[row][currentCol] = 0;
+                                        alreadyMerged[row][currentCol] = true;
+                                    }
                                 }
-                                currentCol--;
                             }
                             else {
                                 tileArray[row][currentCol-1] = tileArray[row][currentCol];
                                 tileArray[row][currentCol] = 0;
-                                currentCol--;
                             }
+                            currentCol--;
                         }
                     }
                 }
@@ -143,22 +240,23 @@ public class Game {
 
             case "right":
                 for (int col=GRID_SIZE-2; col>=0; col--) {
-                    currentCol = 0;
                     for (int row=0; row<GRID_SIZE; row++) {
                         currentCol = col;
                         while (currentCol < GRID_SIZE-1) {
                             if (isTaken(row, currentCol+1)) {
                                 if (tileArray[row][currentCol+1] == tileArray[row][currentCol]) {
-                                    tileArray[row][currentCol+1] += tileArray[row][currentCol];
-                                    tileArray[row][currentCol] = 0;
+                                    if (!alreadyMerged[row][currentCol]) {
+                                        tileArray[row][currentCol+1] += tileArray[row][currentCol];
+                                        tileArray[row][currentCol] = 0;
+                                        alreadyMerged[row][currentCol] = true;
+                                    }
                                 }
-                                currentCol++;
                             }
                             else {
                                 tileArray[row][currentCol+1] = tileArray[row][currentCol];
                                 tileArray[row][currentCol] = 0;
-                                currentCol++;
                             }
+                            currentCol++;
                         }
                     }
                 }
