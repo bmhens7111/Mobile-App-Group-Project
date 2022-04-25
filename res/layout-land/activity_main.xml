@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/grid_base"
+        android:layout_width="236dp"
+        android:layout_height="236dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/darkBrown" />
+
+    <GridLayout
+        android:id="@+id/game_grid"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:columnCount="4"
+        android:rowCount="4"
+        android:useDefaultMargins="true">
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+        <TextView
+            android:layout_width = "50dp"
+            android:layout_height = "50dp"
+            style="@style/GridSquare" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/direction_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/game_grid"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="50dp"
+        android:columnCount="2"
+        android:rotation="45"
+        android:rowCount="2"
+        android:useDefaultMargins="true">
+
+        <Button
+            android:id="@+id/directionUp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/purple_700" />
+
+        <Button
+            android:id="@+id/directionRight"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/purple_700" />
+
+        <Button
+            android:id="@+id/directionLeft"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/purple_700" />
+
+        <Button
+            android:id="@+id/directionDown"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@color/purple_700" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/scoreField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/game_grid"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/score"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="normal" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_menu"
+        app:labelVisibilityMode="labeled" />
+</RelativeLayout>
