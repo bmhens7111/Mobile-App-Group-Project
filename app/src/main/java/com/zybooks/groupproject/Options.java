@@ -19,14 +19,15 @@ public class Options extends AppCompatActivity{
         setContentView(R.layout.options);
         radioGroup = findViewById(R.id.darkModeRadioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.darkModeLight:
+            @Override
+            public void onCheckedChanged(RadioGroup group, int i) {
+                if(radioGroup.isShown()) {
+                    if(i == R.id.darkModeLight) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                        break;
-                    case R.id.darkModeDark:
+                    }
+                    else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                        break;
+                    }
                 }
             }
         });

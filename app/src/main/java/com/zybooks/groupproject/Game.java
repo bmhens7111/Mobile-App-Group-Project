@@ -21,23 +21,26 @@ public class Game {
         addTile();
     }
 
-    public String getState() {
+    public int[] getState() {
         StringBuilder boardString = new StringBuilder();
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                int value = tileArray[row][col];
-                boardString.append(value);
-            }
-        }
-
-        return boardString.toString();
-    }
-
-    public void setState(String gameState) {
+        int[] values = new int[GRID_SIZE * GRID_SIZE];
         int index = 0;
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                tileArray[row][col] = Character.getNumericValue(gameState.charAt(index));
+                values[index] = tileArray[row][col];
+                index++;
+            }
+        }
+
+        return values;
+    }
+
+    public void setState(int[] gameState) {
+        int index = 0;
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+//                System.out.println(gameState[index]);
+                tileArray[row][col] = gameState[index];
                 index++;
             }
         }

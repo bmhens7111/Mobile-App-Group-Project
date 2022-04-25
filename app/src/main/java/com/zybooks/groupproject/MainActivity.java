@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog dialog;
 
-    private final String GAME_STATE = "gameState";
+    private final int[] GAME_STATE = new int[16];
 
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             startGame();
         }
         else {
-            String gameState = savedInstanceState.getString(GAME_STATE);
+            int[] gameState = savedInstanceState.getIntArray("GAME_STATE");
             mGame.setState(gameState);
             setTileValues();
             setScore();
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GAME_STATE, mGame.getState());
+        outState.putIntArray("GAME_STATE", mGame.getState());
     }
 
     @Override
