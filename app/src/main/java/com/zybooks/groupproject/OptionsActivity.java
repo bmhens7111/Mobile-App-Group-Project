@@ -26,14 +26,14 @@ public class OptionsActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                //if(radioGroup.isShown()) {
+                if(radioGroup.isShown()) {
                     if (i == R.id.darkModeLight) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     }
                     else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
-                //}
+                }
 
             }
         });
