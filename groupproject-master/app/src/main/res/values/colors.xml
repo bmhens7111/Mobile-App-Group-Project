@@ -10,15 +10,4 @@
     <color name="darkBrown">#664229</color>
     <color name="brown">#E1C16E</color>
     <color name="tan">#ECDEC9</color>
-    <color name="gold">#FFD700</color>
-    <color name="silver">#C0C0C0</color>
-    <color name="bronze">#CD7F32</color>
-
-    <color name="orange">#f5d442</color>
-    <color name="yellow">#e3f542</color>
-    <color name="green">#45f542</color>
-    <color name="blue">#4257f5</color>
-    <color name="indigo">#b342f5</color>
-    <color name="violet">#f542ef</color>
-    <color name="red">#f54254</color>
 </resources>

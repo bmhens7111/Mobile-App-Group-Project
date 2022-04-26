@@ -15,16 +15,11 @@
     </style>
 
     <style name="GridSquare">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">90dp</item>
         <item name="android:background">@color/tan</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">40sp</item>
         <item name="android:gravity">center</item>
-    </style>
-
-    <style name="ScoreHolder">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">30sp</item>
-        <item name="android:textAlignment">center</item>
     </style>
 
 </resources>
